@@ -1,0 +1,32 @@
+class Solution {
+    public int countTrapezoids(int[][] points) {
+        long M=1_000_000_007;
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int [] p:points)
+        {
+            map.put(p[1],map.getOrDefault(p[1],0)+1);
+        }
+        ArrayList<Integer> ycord= new ArrayList<>(map.keySet());
+        Collections.sort(ycord);
+        ArrayList<Long> hplanes=new ArrayList<>();
+        for(int y:ycord)
+        {
+            long c=map.get(y);
+            if(c>=2)
+            {
+                hplanes.add(c*(c-1)/2);
+            }   
+            else{
+                hplanes.add(0L);
+            }
+        }
+        long prefix=0;
+        long result=0;
+        for(long h:hplanes)
+        {
+            result=(result+(prefix*h)%M)%M;
+            prefix=(prefix+h)%M;
+        }
+        return (int) result;
+    }
+}
